@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%labels
+    Maintainer "mario.passamani@unitn.it"
+    Credits "Credits where credits are due."
+
+%help
+    This is a container for compiling and running a simple hello world program.
+
+%post
+    echo "Installing required packages..."
+    apt-get update -y
+    apt-get install -y g++
+    g++ /development/hello_world.cc -o /development/hello_world
+
+%files
+    hello_world.cc /development/
+
+%runscript
+    # The commands, to be executed when the container is run
+    /development/hello_world $USER
+
+%environment
+    # Currently empty
