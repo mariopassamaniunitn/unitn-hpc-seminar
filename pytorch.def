@@ -1,0 +1,18 @@
+Bootstrap:docker
+From:continuumio/miniconda3:4.9.2
+
+%labels
+MAINTAINER Thomas Green
+
+%environment
+
+%runscript
+. /etc/profile
+conda activate pytorch
+exec python3
+
+%post
+. /etc/profile
+conda create --name pytorch
+conda activate pytorch
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
