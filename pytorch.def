@@ -12,6 +12,10 @@ conda activate pytorch
 exec python3
 
 %post
+# Create some common mountpoints for systems without overlayfs
+#mkdir /scratch
+#mkdir /apps
+
 . /etc/profile
 conda create --name pytorch
 conda activate pytorch
