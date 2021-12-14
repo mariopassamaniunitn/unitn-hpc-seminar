@@ -1,0 +1,66 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%labels
+    Maintainer "mario.passamani@unitn.it"
+    Credits "Credits where credits are due."
+
+%help
+    This is a container for Gromacs 2021.4 and its dependencies.
+
+%environment
+    #export SINGULARITY_MPICH_DIR=/usr
+
+%post
+    apt-get -y update
+    DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential libfabric-dev libibverbs-dev gfortran \
+      wget autoconf cmake libtool libhwloc-dev libx11-dev \
+      libxt-dev libedit-dev libical-dev ncurses-dev perl unzip \
+      postgresql-server-dev-all postgresql-contrib python-dev tcl-dev tk-dev swig \
+      libexpat-dev libssl-dev libxext-dev libxft-dev automake
+    # Temporary directory, so that we can remove source files
+    # in a single sweep afterwards
+    mkdir /temp
+    cd /temp
+    echo "Configuring hwloc (v. 1.11.8, the same as our cluster)"
+    wget https://github.com/open-mpi/hwloc/archive/refs/tags/hwloc-1.11.8.zip
+    unzip hwloc-1.11.8.zip
+    cd hwloc-hwloc-1.11.8/
+    ./autogen.sh
+    ./configure --prefix=/opt/hwloc 
+    make -j2 && make install
+    ./configure --enable-embedded-mode
+    make && cp src/.libs/libhwloc_embedded.a /opt/hwloc/lib
+    cd ..
+    echo "Configuring OpenPBS (v. 19.1.1, the same as our cluster)"
+    wget https://github.com/openpbs/openpbs/archive/refs/tags/v19.1.1.zip
+    unzip v19.1.1.zip
+    cd openpbs-19.1.1/
+    ./autogen.sh
+    ./configure --prefix=/opt/pbs --with-hwloc=/opt/hwloc
+    make -j2 && make install
+    cd ..
+    echo "Configuring and building OpenMPI (v.4.1.2)..."
+    wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.bz2
+    tar -jxvf openmpi-4.1.2.tar.bz2
+    cd openmpi-4.1.2/
+    ./configure --prefix=/usr --with-tm=/opt/pbs
+    make -j2 && make install
+    cd ..
+    echo "Configuring and building gromacs (MPI, no CUDA)..."
+    wget https://ftp.gromacs.org/gromacs/gromacs-2021.4.tar.gz
+    tar -zxvf gromacs-2021.4.tar.gz
+    cd gromacs-2021.4/
+    mkdir build
+    cd build/
+    cmake -DCMAKE_C_COMPILER=/usr/bin/mpicc -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx -DGMX_MPI=ON -DGMX_BUILD_OWN_FFTW=ON ..
+    #./configure --prefix=/usr/local/osu CC=/usr/bin/mpicc CXX=/usr/bin/mpicxx
+    make -j2 && make install
+    # Drop stuff we won't use later
+    rm -fR /temp
+
+%runscript
+    # No runscript
+
+%files
+    # No files (yet)
