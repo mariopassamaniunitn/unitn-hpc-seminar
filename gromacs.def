@@ -9,7 +9,23 @@ From: ubuntu:20.04
     This is a container for Gromacs 2021.4 and its dependencies.
 
 %environment
-    #export SINGULARITY_MPICH_DIR=/usr
+    # Defines environment variables that are going to be useful
+    # during container execution, like a modulefile
+    export MPICC=/usr/bin/mpicc
+    export MPICXX=/usr/bin/mpic++
+    export GMXBIN=/usr/local/gromacs/bin
+    export GMXLDLIB=/usr/local/gromacs/lib64
+    export GMXMAN=/usr/local/gromacs/share/man
+    export GMXDATA=/usr/local/gromacs/share/gromacs
+    export GMXTOOLCHAINDIR=/usr/local/gromacs/share/cmake
+    export GROMACS_DIR=/usr/local/gromacs
+    #set-alias       gcc             gcc-9.1.0
+    #set-alias       g++             g++-9.1.0
+    #set-alias       gfortran        gfortran-9.1.0
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/include:$GMXLDLIB
+    export MANPATH=$MANPATH:/usr/share/man/:$GMXMAN
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$GMXLDLIB/pkgconfig
+    export PATH=$PATH:$GMXBIN
 
 %post
     apt-get -y update
