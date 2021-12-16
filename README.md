@@ -88,6 +88,14 @@ Anyhow, output should be:
 
 ### IV - Create a container that uses the "--bind" switch
 
+A quite complex issue of creating a redistributable library environment,
+that depends on PBS itself at compile time, which is available only
+on the cluster. How can it be compiled on a personal computer?
+By preliminarly downloading, compiling & installing PBS on the
+container, at the same version level of the cluster, the issue has
+been overcame. Once on the cluster, the container is run with the
+"--bind" options, so that it can access the actual PBS installation.
+
 Instructions:
 
 (beware, step 1 may require a lot of time)
