@@ -88,4 +88,11 @@ Anyhow, output should be:
 
 ### IV - Create a container that uses the "--bind" switch
 
+Instructions:
 
+(beware, step 1 may require a lot of time)
+
+1. sudo singularity build gromacs.sif gromacs.def
+2. scp gromacs.sif <your_username>@hpc-head-n1.unitn.it:.
+3. (on the cluster) module load singularity-3.4.0
+4. singularity shell --bind /opt/pbs:/opt/pbs gromacs.sif
