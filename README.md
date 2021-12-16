@@ -36,7 +36,7 @@ Instructions:
 
 Should return
 
-CUDA libraries are not available
+`CUDA libraries are not available
 
 as expected; but doing this
 
@@ -53,7 +53,7 @@ of singularity run command. Indeed this sequence:
 
 returns
 
-CUDA libraries are available
+`CUDA libraries are available
 
 ### III - Create a container which uses MPI in "hybrid mode"
 
