@@ -19,9 +19,6 @@ From: ubuntu:20.04
     export GMXDATA=/usr/local/gromacs/share/gromacs
     export GMXTOOLCHAINDIR=/usr/local/gromacs/share/cmake
     export GROMACS_DIR=/usr/local/gromacs
-    #set-alias       gcc             gcc-9.1.0
-    #set-alias       g++             g++-9.1.0
-    #set-alias       gfortran        gfortran-9.1.0
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/include:$GMXLDLIB
     export MANPATH=$MANPATH:/usr/share/man/:$GMXMAN
     export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$GMXLDLIB/pkgconfig
@@ -70,7 +67,6 @@ From: ubuntu:20.04
     mkdir build
     cd build/
     cmake -DCMAKE_C_COMPILER=/usr/bin/mpicc -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx -DGMX_MPI=ON -DGMX_BUILD_OWN_FFTW=ON ..
-    #./configure --prefix=/usr/local/osu CC=/usr/bin/mpicc CXX=/usr/bin/mpicxx
     make -j2 && make install
     # Drop stuff we won't use later
     rm -fR /temp
