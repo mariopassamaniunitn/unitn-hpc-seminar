@@ -1,11 +1,13 @@
 # unitn-hpc-seminar
 Stuff for UniTN HPC seminar participants
 
-Examples
+## Examples
 
-I - Create a simple container, based on Ubuntu 20.04 image.
-The container reads a simple C++ program (hello_world.cc),
-compiles it and store the outcome.
+### I - Create a simple container
+
+Create a simple container, based on Ubuntu 20.04 image.
+The container reads a very simple C++ program (hello_world.cc),
+compiles it and store the executable.
 
 Once created, executes the program everytime one runs the
 container.
@@ -18,9 +20,13 @@ Instructions:
 4. singularity run hello_world.sif
 
 
-II - Create a container with PyTorch python library, and use it
+### II - Create a container using GPUs (--nv switch)
+
+Create a container with PyTorch python library, and use it
 to demonstrate usage of "--nv" switch to take advantage of
 available GPU hardware.
+
+Instructions:
 
 1. sudo singularity build pytorch.sif pytorch.def
 2. scp pytorch.sif pytorch_test.py <your_username>@hpc-head-n1.unitn.it:.
@@ -48,3 +54,9 @@ of singularity run command. Indeed this sequence:
 returns
 
 CUDA libraries are available
+
+### III - Create a container which uses MPI in "hybrid mode"
+
+### IV - Create a container that uses the "--bind" switch
+
+
