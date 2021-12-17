@@ -80,7 +80,7 @@ to check on which node it was executed:
 Alternatvely, one could do last step by combining qstat JSON
 output capabilities wth a jq query:
 
-2'. qstat -xf $JOBID -F json | jq --arg jobid $JOBID \ '.Jobs[$jobid+".hpc-head-n1.unitn.it"].exec_host'
+qstat -xf $JOBID -F json | jq --arg jobid $JOBID \ '.Jobs[$jobid+".hpc-head-n1.unitn.it"].exec_host'
 
 Anyhow, output should be:
 

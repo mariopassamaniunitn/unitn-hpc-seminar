@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -l select=2:ncpus=2:mpiprocs=2
+#PBS -q short_cpuQ
+#PBS -l walltime=00:20:00
+#PBS -N osu_hello
+#PBS -o osu_hello.out
+#PBS -e osu_hello.err
+#PBS -M mario.passamani@unitn.it
+#PBS -m abe 
+
+module load singularity-3.4.0
+module load mpich-3.2.1--gcc-9.1.0
+
+cd ${PBS_O_WORKDIR}
+
+mpiexec -np 4 singularity run osu_benchmarks.sif startup/osu_hello
