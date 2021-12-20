@@ -14,11 +14,12 @@ container.
 
 Instructions:
 
+```
 1. sudo singularity build hello_world.sif hello_world.def
 2. scp hello_world.sif <your_username>@hpc-head-n1.unitn.it:.
 3. (on the cluster) module load singularity-3.4.0
 4. singularity run hello_world.sif
-
+```
 
 ### II - Create a container using GPUs (--nv switch)
 
@@ -28,11 +29,13 @@ available GPU hardware.
 
 Instructions:
 
+```
 1. sudo singularity build pytorch.sif pytorch.def
 2. scp pytorch.sif pytorch_test.py <your_username>@hpc-head-n1.unitn.it:.
 3. (on the cluster) qsub -l walltime=00:10:00 -q short_cpuQ -I
 4. (on a certain, non-GPU capable node) module load singularity-3.4.0
 5. cat pytorch_test.py | singularity run pytorch.sif
+```
 
 Should return
 
@@ -40,16 +43,20 @@ Should return
 
 as expected; but doing this
 
+```
 3. (on the cluster) qsub -l walltime=00:10:00 -q short_gpuQ -I
 4. (on a certain, GPU capable node) module load singularity-3.4.0
 5. cat pytorch_test.py | singularity run pytorch.sif
+```
 
 yields the same result, since we forgot to use the "--nv" switch
 of singularity run command. Indeed this sequence:
 
+```
 3. (on the cluster) qsub -l walltime=00:10:00 -q short_gpuQ -I
 4. (on a certain, GPU capable node) module load singularity-3.4.0
 5. cat pytorch_test.py | singularity run --nv pytorch.sif
+```
 
 returns
 
@@ -65,22 +72,26 @@ This is possible thanks to the PMI standard.
 
 Instructions:
 
+```
 1. sudo singularity build osu_benchmarks.sif osu_benchmarks.def
 2. scp osu_benchmarks.sif osu_*.pbs \ <your_username>@hpc-head-n1.unitn.it:.
 3. (on the cluster) qsub osu_hello.pbs
 4. cat osu_hello.err
 5. cat osu_hello.out
+```
 
 In order to be sure that the code actually ran on the custer, it's possible
 to check on which node it was executed:
 
+```
 1. JOBID=$(qstat -x -u $USER | tail -n 1 | cut -d "." -f 1)
 2. qstat -xf $JOBID | grep exec_host
+```
 
 Alternatvely, one could do last step by combining qstat JSON
 output capabilities wth a jq query:
 
-qstat -xf $JOBID -F json | jq --arg jobid $JOBID \ '.Jobs[$jobid+".hpc-head-n1.unitn.it"].exec_host'
+`qstat -xf $JOBID -F json | jq --arg jobid $JOBID \ '.Jobs[$jobid+".hpc-head-n1.unitn.it"].exec_host'`
 
 Anyhow, output should be:
 
@@ -100,7 +111,9 @@ Instructions:
 
 (beware, step 1 may require a lot of time)
 
+```
 1. sudo singularity build gromacs.sif gromacs.def
 2. scp gromacs.sif <your_username>@hpc-head-n1.unitn.it:.
 3. (on the cluster) module load singularity-3.4.0
 4. singularity shell --bind /opt/pbs:/opt/pbs gromacs.sif
+```
